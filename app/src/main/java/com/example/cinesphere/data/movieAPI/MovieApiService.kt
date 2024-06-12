@@ -11,7 +11,7 @@ interface MovieApiService {
 }
 
 val retrofit = Retrofit.Builder()
-    .baseUrl("http://www.omdbapi.com/?apikey=[5611179a]&")
+    .baseUrl("https://freetestapi.com/api/v1/")
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 
