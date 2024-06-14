@@ -6,8 +6,11 @@ import com.example.cinesphere.data.AppDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+
 class UserController(context: Context) {
     private val repository: UserRepository
+
+
 
     init {
         val db = Room.databaseBuilder(
@@ -17,22 +20,32 @@ class UserController(context: Context) {
         repository = UserRepository(db.userDao)
     }
 
-    fun getAllUsers(): List<UserModel> = repository.getAllUsers()
-
-    fun updateUser(user: UserModel) {
-        repository.updateUser(user)
+    suspend fun getAllUsers(): List<UserModel> = withContext(Dispatchers.IO) {
+        repository.getAllUsers()
     }
 
-    fun deleteUser(user: UserModel) {
-        repository.deleteUser(user)
+    suspend fun updateUser(user: UserModel) {
+        withContext(Dispatchers.IO) {
+            repository.updateUser(user)
+        }
     }
 
-    fun getUserById(id: Int): UserModel? {
-        return repository.getUserById(id)
+    suspend fun deleteUser(user: UserModel) {
+        withContext(Dispatchers.IO) {
+            repository.deleteUser(user)
+        }
     }
 
-    fun loginUser(username: String, password: String): UserModel? {
-        return repository.getAllUsers().find { it.username == username && it.password == password }
+    suspend fun getUserById(id: Int): UserModel? {
+        return withContext(Dispatchers.IO) {
+            repository.getUserById(id)
+        }
+    }
+
+    suspend fun loginUser(username: String, password: String): UserModel? {
+        return withContext(Dispatchers.IO) {
+            repository.loginUser(username, password)
+        }
     }
 
     suspend fun registerUser(user: UserModel) {

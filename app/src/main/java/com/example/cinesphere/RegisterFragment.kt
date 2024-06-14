@@ -21,28 +21,39 @@ class RegisterFragment : Fragment() {
     private lateinit var passwordEditText: EditText
     private lateinit var registerButton: Button
 
-    private val userController by lazy { UserController(requireContext()) }
+    private lateinit var userController: UserController
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_register, container, false)
+        val view = inflater.inflate(R.layout.fragment_register, container, false)
 
-        usernameEditText = root.findViewById(R.id.usernameEditText)
-        emailEditText = root.findViewById(R.id.emailEditText)
-        passwordEditText = root.findViewById(R.id.passwordEditText)
-        registerButton = root.findViewById(R.id.registerButton)
+        usernameEditText = view.findViewById(R.id.usernameEditText)
+        emailEditText = view.findViewById(R.id.emailEditText)
+        passwordEditText = view.findViewById(R.id.passwordEditText)
+        registerButton = view.findViewById(R.id.registerButton)
+        userController = UserController(requireContext())
+        return view
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         registerButton.setOnClickListener {
+            registerUser()
+        }
+    }
+    private fun registerUser() {
             val username = usernameEditText.text.toString()
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
             if (username.isBlank() || email.isBlank() || password.isBlank()) {
                 Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+                return
             }
 
             val newUser = UserModel(username = username, email = email, password = password)
@@ -50,29 +61,18 @@ class RegisterFragment : Fragment() {
             lifecycleScope.launch {
                 try {
                     userController.registerUser(newUser)
-                    Toast.makeText(requireContext(), "User registered successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
+                    navigateToLogin()
                 } catch (e: Exception) {
-                    Toast.makeText(requireContext(), "Error registering user", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Registration failed: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        return root
-    }
-
-    private fun registerUser() {
-        val email = emailEditText.text.toString()
-        val password = passwordEditText.text.toString()
-
-        val isRegistrationSuccessful = true
-
-        if (isRegistrationSuccessful) {
-            MainActivity.AuthManager.login()
-
-            startActivity(Intent(activity, MainActivity::class.java))
-            activity?.finish()
-        } else {
-            Toast.makeText(activity, "Registration failed. Please try again.", Toast.LENGTH_SHORT).show()
-        }
+    private fun navigateToLogin() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, LoginFragment())
+            .commit()
     }
 }
+
