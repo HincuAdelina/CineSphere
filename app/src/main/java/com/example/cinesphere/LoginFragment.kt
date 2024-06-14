@@ -1,5 +1,6 @@
 package com.example.cinesphere
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.cinesphere.data.user.AuthManager
 import com.example.cinesphere.data.user.UserController
+import com.example.cinesphere.data.user.UserModel
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
@@ -61,6 +63,7 @@ class LoginFragment : Fragment() {
             try {
                 val user = userController.loginUser(email, password)
                 if (user != null) {
+                    saveUserInSharedPreferences(user)
                     AuthManager.login()
                     startActivity(Intent(activity, MainActivity::class.java))
                     requireActivity().finish()
@@ -78,5 +81,16 @@ class LoginFragment : Fragment() {
             .replace(R.id.fragment_container, RegisterFragment())
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun saveUserInSharedPreferences(user: UserModel) {
+        val sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        editor.putString("userId", user.id.toString())
+        editor.putString("username", user.username)
+        editor.putString("email", user.email)
+
+        editor.apply()
     }
 }
