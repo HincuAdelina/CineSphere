@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cinesphere.R
@@ -45,12 +46,20 @@ class MovieAdapter(private var movies: MutableList<MovieModel>,
         val isWatched = getWatchedStatus(movieId)
         holder.watchedButton.text = if (isWatched) "Watched" else "Add to watched"
 
+        holder.watchedButton.setBackgroundColor(
+            if (isWatched) ContextCompat.getColor(context, R.color.button_pressed_color)
+            else ContextCompat.getColor(context, R.color.button_default_color)
+        )
 
         holder.watchedButton.setOnClickListener {
             val currentlyWatched = getWatchedStatus(movieId)
             val newStatus = !currentlyWatched
             updateWatchedStatus(movieId, newStatus)
             holder.watchedButton.text = if (newStatus) "Watched" else "Add to watched"
+            holder.watchedButton.setBackgroundColor(
+                if (newStatus) ContextCompat.getColor(context, R.color.button_pressed_color)
+                else ContextCompat.getColor(context, R.color.button_default_color)
+            )
             if (removeItem){
                 movies.filter { it.id == movie.id}.firstOrNull()?.let {movies.remove(it) }
                 notifyDataSetChanged()
