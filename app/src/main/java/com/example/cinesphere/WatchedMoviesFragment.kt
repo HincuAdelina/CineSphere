@@ -35,7 +35,9 @@ class WatchedMoviesFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.recyclerViewWatchedMovies)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        movieAdapter = MovieAdapter(mutableListOf(), requireContext(), userId, true)
+        movieAdapter = MovieAdapter(mutableListOf(), requireContext(), userId, true, onItemClick = { movie ->
+            openMovieDetailFragment(movie)
+        })
         recyclerView.adapter = movieAdapter
 
         fetchWatchedMovies()
@@ -69,5 +71,13 @@ class WatchedMoviesFragment : Fragment() {
     private fun getUserIdFromSharedPreferences(context: Context): String {
         val sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         return sharedPreferences.getString("userId", "") ?: ""
+    }
+
+    private fun openMovieDetailFragment(movie: MovieModel) {
+        val fragment = MovieDetailFragment.newInstance(movie)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.movieDetailFragment, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
