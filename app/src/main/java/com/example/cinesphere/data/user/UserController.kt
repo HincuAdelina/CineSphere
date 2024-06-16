@@ -10,8 +10,6 @@ import kotlinx.coroutines.withContext
 class UserController(context: Context) {
     private val repository: UserRepository
 
-
-
     init {
         val db = Room.databaseBuilder(
             context.applicationContext,

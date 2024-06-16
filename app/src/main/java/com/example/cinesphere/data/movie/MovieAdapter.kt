@@ -14,7 +14,8 @@ import com.example.cinesphere.R
 class MovieAdapter(private var movies: MutableList<MovieModel>,
                    private val context: Context,
                    private val userId: String,
-                   private val removeItem: Boolean = false
+                   private val removeItem: Boolean = false,
+                   private val onItemClick: (MovieModel) -> Unit
 ) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
     private val sharedPreferences = context.getSharedPreferences("${userId}_watched_movies_prefs", Context.MODE_PRIVATE)
@@ -55,6 +56,10 @@ class MovieAdapter(private var movies: MutableList<MovieModel>,
                 notifyDataSetChanged()
             }
 
+        }
+
+        holder.itemView.setOnClickListener {
+            onItemClick(movie)
         }
     }
     override fun getItemCount(): Int = movies.size
