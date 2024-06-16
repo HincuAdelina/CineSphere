@@ -8,6 +8,6 @@ class MovieModel(
     val title: String,
     val plot: String,
     val poster: String,
-    val watched: Boolean,
+    var watched: Boolean = false,
     val imdbID: String
 )

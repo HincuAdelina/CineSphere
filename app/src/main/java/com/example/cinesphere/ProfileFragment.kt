@@ -16,6 +16,7 @@ class ProfileFragment : Fragment() {
     private lateinit var usernameTextView: TextView
     private lateinit var emailTextView: TextView
     private lateinit var logoutButton: Button
+    private lateinit var userId: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,6 +28,7 @@ class ProfileFragment : Fragment() {
         emailTextView = view.findViewById(R.id.email)
         logoutButton = view.findViewById(R.id.logoutButton)
 
+        userId = getUserIdFromSharedPreferences(requireContext())
         val user = getUserFromSharedPreferences(requireContext())
         if (user != null) {
             usernameTextView.text = user.username
@@ -42,7 +44,6 @@ class ProfileFragment : Fragment() {
 
     private fun logout() {
         clearUserFromSharedPreferences(requireContext())
-
         val intent = Intent(requireContext(), AuthActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
@@ -67,5 +68,10 @@ class ProfileFragment : Fragment() {
         val editor = sharedPreferences.edit()
         editor.clear()
         editor.apply()
+    }
+
+    private fun getUserIdFromSharedPreferences(context: Context): String {
+        val sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("userId", "") ?: ""
     }
 }
