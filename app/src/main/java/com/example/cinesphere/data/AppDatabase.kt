@@ -17,5 +17,4 @@ import com.example.cinesphere.data.user.UserModel
 abstract class AppDatabase : RoomDatabase() {
     abstract val movieDao: MovieDao
     abstract val userDao: UserDao
-
 }

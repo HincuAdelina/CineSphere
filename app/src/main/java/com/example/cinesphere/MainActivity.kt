@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, AllMoviesFragment())
+                .addToBackStack("AllMoviesFragment")
                 .commit()
         }
 
@@ -25,18 +26,21 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_all_movies -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, AllMoviesFragment())
+                        .addToBackStack("AllMoviesFragment")
                         .commit()
                     true
                 }
                 R.id.navigation_watched_movies -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, WatchedMoviesFragment())
+                        .addToBackStack("WatchedMoviesFragment")
                         .commit()
                     true
                 }
                 R.id.navigation_profile -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, ProfileFragment())
+                        .addToBackStack("ProfileFragment")
                         .commit()
                     true
                 }

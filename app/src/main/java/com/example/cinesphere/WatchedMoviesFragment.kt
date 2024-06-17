@@ -77,7 +77,7 @@ class WatchedMoviesFragment : Fragment() {
         val fragment = MovieDetailFragment.newInstance(movie)
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
+            .addToBackStack("MovieDetailFragment")
             .commit()
     }
 }

@@ -11,7 +11,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.cinesphere.data.user.AuthManager
 import com.example.cinesphere.data.user.UserController
 import com.example.cinesphere.data.user.UserModel
 import kotlinx.coroutines.launch
@@ -64,7 +63,6 @@ class LoginFragment : Fragment() {
                 val user = userController.loginUser(email, password)
                 if (user != null) {
                     saveUserInSharedPreferences(user)
-                    AuthManager.login()
                     startActivity(Intent(activity, MainActivity::class.java))
                     requireActivity().finish()
                 } else {
