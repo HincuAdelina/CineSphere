@@ -76,7 +76,7 @@ class WatchedMoviesFragment : Fragment() {
     private fun openMovieDetailFragment(movie: MovieModel) {
         val fragment = MovieDetailFragment.newInstance(movie)
         parentFragmentManager.beginTransaction()
-            .replace(R.id.movieDetailFragment, fragment)
+            .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
             .commit()
     }
